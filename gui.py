@@ -9,10 +9,10 @@ class Gui(tk.Tk):
 
     def __init__(self):
         super().__init__()
-        self.title('DB fill')
-        self.geometry('650x450')
+        self.title('Generator Danych do bazy')
+        self.geometry('800x600')
 
-        self.label1 = tk.Label(self, text='Wybierz tabele:', font=('Arial', 18))
+        self.label1 = tk.Label(self, text='Do jakich tabel generujemy dane?', font=('Arial', 20))
         self.label1.grid(row=0, column=0)
 
         self.tabele = ['Klient', 'Obiekt', 'Brama']

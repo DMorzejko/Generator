@@ -1,20 +1,20 @@
 def genSQl(set, data):
     ins = 'INSERT INTO '
     val = 'VALUES '
-    tables = ['Klient', 'Obiekt', 'Brama', 'Centrala', 'Akumulator', 'Typ']
+    tables = ['Klient'] #kasować """, 'Obiekt', 'Brama', 'Centrala', 'Akumulator', 'Typ'"""
     table = tables[set]
     sqlSet = []
 
     #   Klient
     if set == 0:
-        fields = '(ID_kli, nazwa, Nip, Ulica, Nr_budynku, miasto, nr_telefonu, email) '
+        fields = '(Id_kli, Nazwa, Nip, Ulica, Nr_budynku, miasto, nr_telefonu, email) '
         for i in range(len(data)):
             sqlCommand = ins + tables[set] + " " + fields + val + "('" + data[i][0] + "', '" + data[i][1] + "', '" + \
-                         data[i][2] + "', '" + data[i][3] + "', TO_DATE('" + data[i][4] + "', 'DD/MM/YYYY'), '" + \
-                         data[i][5] + "', '" + data[i][6] + "')"
+                         data[i][2] + "', '" + data[i][3] + "', '" + data[i][4] + "', '" + \
+                         data[i][5] + "', '" + data[i][6] + "', '" + data[i][7] +"')"
             sqlSet.append(sqlCommand)
         return sqlSet
-
+"""
     #   Obiekt
     elif set == 1:
         fields = '(krwiodawcy_id, data, opis_przyczyn, data_koncowa) '
@@ -58,3 +58,4 @@ def genSQl(set, data):
             sqlSet.append(sqlCommand)
         return sqlSet
 
+"""

@@ -24,8 +24,8 @@ class generator:
     # Klient
     def gen0(self, num):
         conn = dbConnection.DbConnection()
-        #conn.execute('SELECT MAX(id_kli) FROM Klient')
-        #maxId = conn.getData()[0]
+        conn.execute('SELECT MAX(id_kli) FROM Klient')
+        maxId = conn.getData()[0]
         conn.execute('SELECT Nazwa FROM Klient')
         KlNazwa = conn.getData()
         conn.execute('SELECT Nip FROM Klient')
@@ -37,8 +37,6 @@ class generator:
         nipy = []
         nazwy = []
         for i in range(num):
-
-
             while True:
                 kNip = random.randint(1000000000,9999999999)
                 if kNip not in KlNip or nipy:
@@ -56,14 +54,21 @@ class generator:
             with open(r'data/miasto.txt', 'r', encoding='utf-8') as fp:
                 kMia = random.choice(fp.readlines())
             kTel = random.randint(500000000, 999999999)
-            kMail = 'biuro@'+ str(random.choice(kNaz)) + '.com.pl'
+            kMail = 'biuro@'+ str((kNaz)) + '.com.pl'
 
-
-            result.append([str(random.choice(kNaz)), int(kNip),
-                           str(random.choice(kUlica)), str(kNr),
-                           str(random.choice(kMia)),int(kTel),str(kMail)])
+            maxId += 1
+            result.append([str(maxId),str((kNaz)), str(kNip),
+                           str((kUlica)), str(kNr),
+                           str((kMia)), str(kTel), str(kMail)])
         return result
 
+    def toList(self, data):
+        result = []
+        for i in range(len(data)):
+            result.append(str(data[i]).split())
+
+        return result
+"""
     # Obiekt
     def gen1(self, num):
         conn = dbConnection.DbConnection()
@@ -241,15 +246,10 @@ class generator:
             name = 'Szpital ' + fake.city()
             result.append([name])
 
-        return result
+        return result"""
 
-    def toList(self, data):
-        result = []
-        for i in range(len(data)):
-            result.append(str(data[i]).split())
-        return result
 
-    def genDate(self, start, end):
+"""   def genDate(self, start, end):
         fake = Faker()
         result = str(fake.date_between(start_date=start, end_date=end))
-        return result.split('-')    #['YYYY', 'MM', 'DD']
+        return result.split('-')    #['YYYY', 'MM', 'DD']"""
