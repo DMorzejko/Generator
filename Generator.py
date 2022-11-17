@@ -103,10 +103,10 @@ class generator:
 
             result.append([str(maxOId),str((ONaz)), str(oUlica),
                            str((oNr)), str(oMia),
-                           str((oTel)), str(oMail), str(oOsOd), str(klId)])
+                           str((oTel)), str(oMail), str(oOsOd), str(klId), str(maxOId)])
         return result
 
-    # Miasta
+    # Brama +
     def gen2(self, num):
         conn = dbConnection.DbConnection()
         conn.execute('SELECT kod_pocztowy FROM miasta')
