@@ -16,8 +16,7 @@ class generator:
             return self.gen1(num)
         elif set == 2:
             return self.gen2(num)
-        elif set == 3:
-            return self.gen3(num)
+
 
 
 
@@ -68,22 +67,43 @@ class generator:
             result.append(str(data[i]).split())
 
         return result
-"""
+
     # Obiekt
     def gen1(self, num):
         conn = dbConnection.DbConnection()
-        conn.execute('SELECT id FROM krwiodawcy')
-        idKrwio = conn.getData()
+        conn.execute('SELECT MAX(id_obj) FROM Obiekt')
+        maxOId = conn.getData()[0]
+        conn.execute('SELECT Id_kli FROM Klient')
+        KlId = conn.getData()
+        conn.execute('SELECT Nazwa FROM Obiekt')
+        ObNazwa = conn.getData()
         del conn
 
         result = []
-
+        ObNazwy = []
         for i in range(num):
-            date = self.genDate('-30y', '+1y')
-            endYear = str(int(date[0]) + 1)
-            result.append([str(random.choice(idKrwio)), (str(date[2]) + '/' + str(date[1]) + '/' + str(date[0])),
-                           'Tu opis...', (str(date[2]) + '/' + str(date[1]) + '/' + endYear)])
+            maxOId += 1
+            while True:
+                with open(r'data/O_nazwa.txt', 'r', encoding='utf-8') as fp:
+                    ONaz = random.choice(fp.readlines())
+                    if ONaz not in ObNazwy or ObNazwa:
+                        ObNazwy.append(ONaz)
+                        break
+            with open(r'data/ulica.txt', 'r', encoding='utf-8') as fp:
+               oUlica = random.choice(fp.readlines())
+            oNr = str(random.randrange(100))
+            with open(r'data/miasto.txt', 'r', encoding='utf-8') as fp:
+                oMia = random.choice(fp.readlines())
+            oTel = random.randint(500000000, 999999999)
+            oMail = 'biuro@'+ str((ONaz)) + '.com.pl'
+            with open(r'data/osodp.txt', 'r', encoding='utf-8') as fp:
+               oOsOd = random.choice(fp.readlines())
+            klId = random.choice(KlId)
 
+
+            result.append([str(maxOId),str((ONaz)), str(oUlica),
+                           str((oNr)), str(oMia),
+                           str((oTel)), str(oMail), str(oOsOd), str(klId)])
         return result
 
     # Miasta
@@ -111,6 +131,7 @@ class generator:
         result = self.toList(random.choices(data, k=num))
         return result
 
+    """
     # Oddzial_RCKiK
     def gen3(self, num):
         conn = dbConnection.DbConnection()
