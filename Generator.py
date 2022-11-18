@@ -1,9 +1,5 @@
-
 import dbConnection
-import string
 import random
-from faker import Faker
-
 
 def randomize(l):
     pnone = 0.8
@@ -13,10 +9,8 @@ def randomize(l):
         selection = random.choice(l)
     return selection
 class generator:
-
     def __init__(self):
-        print('Generator')
-
+        print('Uruchomiono generator: ')
     def get(self, set, num):
         if set == 0:
             return self.gen0(num)
@@ -24,9 +18,6 @@ class generator:
             return self.gen1(num)
         elif set == 2:
             return self.gen2(num)
-
-
-
 
     # Klient
     def gen0(self, num):
@@ -39,7 +30,6 @@ class generator:
         KlNip = conn.getData()
 
         del conn
-
         result = []
         nipy = []
         nazwy = []
@@ -174,150 +164,3 @@ class generator:
                            str(BPodTyp), str(numer), str(rysunek), str(czasookres),
                            str(obj_id), str(obj_id), str(maxTypId), str(maxTypId)])
         return result
-
-
-
-    """
-    # Oddzial_RCKiK
-    def gen3(self, num):
-        conn = dbConnection.DbConnection()
-        conn.execute('SELECT id FROM miasta')
-        idCities = conn.getData()
-        del conn
-
-        result = []
-        fake = Faker('pl_PL')
-
-        for i in range(num):
-            adress = fake.street_address()
-            result.append([adress, str(random.choice(idCities))])
-
-        return result
-
-
-    # Pracownicy
-    def gen4(self, num):
-        conn = dbConnection.DbConnection()
-        conn.execute('SELECT id FROM oddzial_rckik')
-        idOddzial = conn.getData()
-        del conn
-
-        result = []
-
-        for i in range(num):
-            plec = random.choice([0, 1])
-            if plec == 0:
-                with open(r'data/imionaM.txt', 'r', encoding='utf-8') as fp:
-                    fName = random.choice(fp.readlines())
-                with open(r'data/nazwiskaM.txt', 'r', encoding='utf-8') as fp:
-                    lName = random.choice(fp.readlines())
-            else:
-                with open(r'data/imionaK.txt', 'r', encoding='utf-8') as fp:
-                    fName = random.choice(fp.readlines())
-                with open(r'data/nazwiskaK.txt', 'r', encoding='utf-8') as fp:
-                    lName = random.choice(fp.readlines())
-            result.append([str(fName).strip(), str(lName).strip(), str(random.choice(idOddzial))])
-
-        return result
-
-
-    # Oddzial_terenowy
-    def gen5(self, num):
-        conn = dbConnection.DbConnection()
-        conn.execute('SELECT id FROM oddzial_rckik')
-        idOddzial = conn.getData()
-        del conn
-
-        result = []
-
-        for i in range(num):
-            result.append(str(random.choice(idOddzial)))
-        return result
-
-
-    # Pobrania + Krew
-    def gen6(self, num):
-        conn = dbConnection.DbConnection()
-        conn.execute('SELECT id FROM oddzial_rckik')
-        idOddzial = conn.getData()
-        conn.execute('SELECT id FROM krwiodawcy')
-        idKrwiodacy = conn.getData()
-        conn.execute('SELECT id FROM pracownicy')
-        idPracownicy = conn.getData()
-        conn.execute('SELECT MAX(id) FROM pobrania')
-        lastID = conn.getData()[0]
-        del conn
-
-        result = []
-
-        for i in range(num):
-            date = self.genDate('-20y', 'today')
-            result.append([str(random.choice(idOddzial)), str(random.choice(idKrwiodacy)),
-                           str(random.choice(idPracownicy)), (str(date[2]) + '/' + str(date[1]) + '/' + str(date[0]))])
-
-            lastID += 1
-            ml = random.randrange(150, 1000)
-            if ml > 450:
-                ml = 450
-            status = random.choice(['D', 'U', 'B'])
-            expYear = str(int(date[0]) + 1)
-            result.append([str(lastID), str(ml), status, (str(date[2]) + '/' + str(date[1]) + '/' + expYear)])
-
-        return result
-
-
-    # Wyniki_badan
-    def gen7(self, num):
-        conn = dbConnection.DbConnection()
-        conn.execute('SELECT id FROM krew')
-        idKrew = conn.getData()
-        del conn
-
-        result = []
-
-        for i in range(num):
-            desc = 'Opis badania w kartotece nr. ' + str(random.randrange(1000000))
-            result.append([str(random.choice(idKrew)), str(random.choice(['0', '1'])), desc])
-
-        return result
-
-
-    # Wydania_krwi
-    def gen8(self, num):
-        conn = dbConnection.DbConnection()
-        conn.execute('SELECT id FROM krew WHERE wydania_krwi_id IS NULL')
-        idKrew = conn.getData()
-        conn.execute('SELECT id FROM jednostki_docelowe')
-        idJednostki = conn.getData()
-        conn.execute('SELECT MAX(id) FROM wydania_krwi')
-        lastID = conn.getData()[0]
-        del conn
-
-        result = []
-
-        for i in range(num):
-            lastID += 1
-            date = self.genDate('-10y', 'today')
-            result.append([str(random.randrange(999999)), (str(date[2]) + '/' + str(date[1]) + '/' + str(date[0])),
-                           str(random.choice(idJednostki)).strip(), str(random.choice(idKrew)).strip(),
-                           str(lastID)])
-
-        return result
-
-
-    # Jednostki_docelowe
-    def gen9(self, num):
-        result = []
-        fake = Faker('pl_PL')
-        for i in range(num):
-            name = 'Szpital ' + fake.city()
-            result.append([name])
-
-        return result"""
-
-
-"""   def genDate(self, start, end):
-        fake = Faker()
-        result = str(fake.date_between(start_date=start, end_date=end))
-        return result.split('-')    #['YYYY', 'MM', 'DD']"""
-

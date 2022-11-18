@@ -1,6 +1,4 @@
 import cx_Oracle
-
-
 class DbConnection:
     def __init__(self):
         with open(r'dbcon', 'r', encoding='utf-8') as fp:

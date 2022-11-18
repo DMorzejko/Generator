@@ -10,11 +10,13 @@ class Gui(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title('Generator Danych do bazy')
+       # self.geometry('650x450')
 
         self.label1 = tk.Label(self, text='Do jakich tabel generujemy dane?', font=('Arial', 20, "bold"))
         self.label1.grid(row=0, column=0, columnspan=2, sticky='EW',pady=10)
 
         self.tabele = ['Klient', 'Obiekt + Przedmioty_przeglądu', 'Akumulator + Centrala + Typ + Brama']
+
         self.var = []
         self.chkb = []
 
@@ -38,7 +40,7 @@ class Gui(tk.Tk):
         try:
             num = int(self.ent.get())
         except:
-            messagebox.showerror('Błąd', 'Wartość ma być całkowitą liczbą')
+            messagebox.showerror('Błąd', 'Wartość ma być całkowitą liczbą.')
             print('Nie działa.')
             return
 
@@ -48,8 +50,22 @@ class Gui(tk.Tk):
         for i in range(len(self.var)):
             vartab.append(self.var[i].get())
         gen = Generator.generator()
+        noOfIns = vartab.copy()
+        for i in range(len(self.var)):
+            if vartab[i] == 0:
+                continue
+            noOfIns[i] -= 1
+            dataSet = gen.get(i, num)
+            if dataSet == 0:
+                continue
+            else:
+                sqlSet = InsertMaker.genSQl(i, dataSet)
+                for sql in sqlSet:
+                    #print('sql:', sql)
+                    conn.execute(sql)
+                    noOfIns[i] += 1
         conn.commit()
 
-        messagebox.showinfo('Działa', 'Operacja wykonana pomyślnie')
-        print('Działa')
+        messagebox.showinfo('Działa', 'Operacja wykonana pomyślnie.')
+        print('Działa.')
         del conn
