@@ -4,6 +4,14 @@ import string
 import random
 from faker import Faker
 
+
+def randomize(l):
+    pnone = 0.8
+    if random.random() < pnone:
+        selection = ''
+    else:
+        selection = random.choice(l)
+    return selection
 class generator:
 
     def __init__(self):
@@ -68,6 +76,7 @@ class generator:
 
         return result
 
+
     # Obiekt
     def gen1(self, num):
         conn = dbConnection.DbConnection()
@@ -106,30 +115,67 @@ class generator:
                            str((oTel)), str(oMail), str(oOsOd), str(klId), str(maxOId)])
         return result
 
-    # Brama +
+    # Akumulator, Centrala, Typ, Brama
     def gen2(self, num):
         conn = dbConnection.DbConnection()
-        conn.execute('SELECT kod_pocztowy FROM miasta')
-        isInDB = conn.getData()
+        conn.execute('SELECT numer FROM Brama')
+        BCheck = conn.getData()
+        conn.execute('SELECT id_obj FROM Obiekt')
+        BObId = conn.getData()
+        conn.execute('SELECT MAX(id_typ) FROM typ')
+        maxTypId = conn.getData()[0]
         del conn
 
-        with open(r'data/kodyMiasta.txt', 'r', encoding='utf-8') as fp:
-            rawData = fp.readlines()
+        bramy = []
+        result = []
+        for i in range(num):
 
-        data = []
-        for row in rawData:
-            if str(row).split()[0] not in isInDB:
-                data.append(row)
+            #akumulator
+            maxTypId += 1
+            Akumulator = ['MAŁY', 'DUŻY']
+            Aku = random.choice(Akumulator)
+            #centrala
+            if Aku == 'DUŻY':
+                Centrala = 'FS'
+            else:
+                Centrala = 'SL'
 
-        x = len(data)
-        print('Dostępne miasta:', x)
-        if x == 0:
-            return 0
-        elif x < num:
-            num = x
+            # typ
+            typy = ['S', 'G', 'R', 'O']
+            podtypyS = ['2T', '3T']
+            podtypyOR = ['H']
+            BTyp = random.choice(typy)
+            if BTyp == 'S':
+                BPodTyp = randomize(podtypyS)
+            elif BTyp == 'R' or 'O':
+                BPodTyp = randomize(podtypyOR)
+            else:
+                BPodTyp = None
 
-        result = self.toList(random.choices(data, k=num))
+            #brama
+            while True:
+                numer = random.randint(130000,229999)
+                if numer not in BCheck or bramy:
+                    bramy.append(numer)
+                    break
+            RysChoice = ['TAK','NIE']
+            rysunek = random.choice(RysChoice)
+            if numer > 199999:
+                czasookres = '6M'
+            else:
+                czasookres = '12M'
+            obj_id = random.choice(BObId)
+
+
+
+
+            result.append([str(maxTypId), str(Aku), str(maxTypId),
+                           str(Centrala), str(maxTypId), str(maxTypId), str(BTyp),
+                           str(BPodTyp), str(numer), str(rysunek), str(czasookres),
+                           str(obj_id), str(obj_id), str(maxTypId), str(maxTypId)])
         return result
+
+
 
     """
     # Oddzial_RCKiK
@@ -274,3 +320,4 @@ class generator:
         fake = Faker()
         result = str(fake.date_between(start_date=start, end_date=end))
         return result.split('-')    #['YYYY', 'MM', 'DD']"""
+

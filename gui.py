@@ -10,36 +10,36 @@ class Gui(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title('Generator Danych do bazy')
-        self.geometry('800x600')
 
-        self.label1 = tk.Label(self, text='Do jakich tabel generujemy dane?', font=('Arial', 20))
-        self.label1.grid(row=0, column=0)
+        self.label1 = tk.Label(self, text='Do jakich tabel generujemy dane?', font=('Arial', 20, "bold"))
+        self.label1.grid(row=0, column=0, columnspan=2, sticky='EW',pady=10)
 
-        self.tabele = ['Klient', 'Obiekt', 'Brama']
+        self.tabele = ['Klient', 'Obiekt + Przedmioty_przeglądu', 'Akumulator + Centrala + Typ + Brama']
         self.var = []
         self.chkb = []
 
         for i in range(len(self.tabele)):
             self.var.append(tk.IntVar())
             self.chkb.append(tk.Checkbutton(self, text=self.tabele[i], font=('Arial', 16), variable=self.var[i]))
-            self.chkb[i].grid(row=(i + 1), column=0, sticky='W')
+            self.chkb[i].grid(row=(i + 1), column=0, sticky='WE')
 
-        self.label1 = tk.Label(self, text='Liczba wpisów do wybranych tabel:', font=('Arial', 18))
-        self.label1.grid(row=0, column=2, columnspan=2)
+        self.label1 = tk.Label(self, text='Liczba wpisów do wybranych tabel:', font=('Arial', 18, "bold"))
+        self.label1.grid(row=6, column=0, columnspan=2,pady=15)
         self.ent = tk.Entry(self, font=('Arial', 18), justify='right')
-        self.ent.grid(row=1, column=2, columnspan=2, sticky='E')
+        self.ent.grid(row=10, column=0, columnspan=2, sticky='WE')
 
-        self.buta = tk.Button(self, text='Dodaj', font=('Arial', 18), bg='lightblue', command=self.buttonAdd)
-        self.buta.grid(row=4, column=3, rowspan=4, sticky='NEWS')
+        self.buta = tk.Button(self, text='Wypełnij bazę', font=('Arial', 18), bg='lightgray', command=self.buttonAdd)
+        self.buta.grid(row=15, column=0, rowspan=2, columnspan= 2, sticky ='NEWS')
 
-        self.butc = tk.Button(self, text='Zamknij', font=('Arial', 18), bg='gray', command=self.quit)
-        self.butc.grid(row=9, column=3, rowspan=4, sticky='NEWS')
+        self.butc = tk.Button(self, text='Koniec', font=('Arial', 18), bg='lightgray', command=self.quit)
+        self.butc.grid(row=17, column=0, rowspan=2, columnspan= 2, sticky='NEWS')
 
     def buttonAdd(self):
         try:
             num = int(self.ent.get())
         except:
-            messagebox.showerror('Błąd', 'Podano nieprawidłową wartość')
+            messagebox.showerror('Błąd', 'Wartość ma być całkowitą liczbą')
+            print('Nie działa.')
             return
 
         conn = dbConnection.DbConnection()
@@ -48,32 +48,8 @@ class Gui(tk.Tk):
         for i in range(len(self.var)):
             vartab.append(self.var[i].get())
         gen = Generator.generator()
-        print('Liczba wierszy do dodania:', num)
-        print('Do tabel:', vartab)
-        noOfIns = vartab.copy()
-        for i in range(len(self.var)):
-            if vartab[i] == 0:
-                continue
-            noOfIns[i] -= 1
-            dataSet = gen.get(i, num)
-            if dataSet == 0:
-                continue
-            else:
-                sqlSet = InsertMaker.genSQl(i, dataSet)
-                for sql in sqlSet:
-                    print('sql:', sql)
-                    conn.execute(sql)
-                    noOfIns[i] += 1
-
         conn.commit()
 
-
-        info = 'Do tabel dodano: \n'
-        for i in range(len(noOfIns)):
-            if noOfIns[i] != 0:
-                info += self.tabele[i] + ' - ' + str(int(noOfIns[i])) + ' wpisów\n'
-
-        messagebox.showinfo('Podsumowanie', info)
-
-        print('Dodano wierszy:', noOfIns)
+        messagebox.showinfo('Działa', 'Operacja wykonana pomyślnie')
+        print('Działa')
         del conn
