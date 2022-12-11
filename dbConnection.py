@@ -11,6 +11,7 @@ class DbConnection:
         self._conn.close()
 
     def execute(self, sql):
+        #print(sql)
         self._cursor.execute(sql)
 
     def commit(self):

@@ -1,4 +1,3 @@
-
 AlwerniaBabice
 Bartoszyce
 Będzin
@@ -95,8 +94,7 @@ Lutoryż
 Łaziska Górne
 Łeba
 Łódź
-
- 	• Łuków
+Łuków
 Malbork
 Międzyzdroje
 Mikołajki

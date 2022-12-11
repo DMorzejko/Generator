@@ -13,6 +13,7 @@ def genSQl(set, data):
                          data[i][2] + "', '" + data[i][3] + "', '" + data[i][4] + "', '" + \
                          data[i][5] + "', '" + data[i][6] + "', '" + data[i][7] +"')"
             sqlSet.append(sqlCommand)
+            #print(sqlCommand)
         return sqlSet
 
     #   Obiekt

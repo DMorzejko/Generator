@@ -1,5 +1,6 @@
 import dbConnection
 import random
+import string
 
 def randomize(l):
     pnone = 0.8
@@ -40,16 +41,21 @@ class generator:
                     nipy.append(kNip)
                     break
             while True:
+
                 with open(r'data/K_nazwa.txt', 'r', encoding='utf-8') as fp:
                     kNaz = random.choice(fp.readlines())
+                    kNaz = kNaz.strip()
+                    kNaz += ''.join(random.choices(string.ascii_letters,k=5))
                     if kNaz not in KlNazwa or nazwy:
                         nazwy.append(kNaz)
                         break
             with open(r'data/ulica.txt', 'r', encoding='utf-8') as fp:
-               kUlica = random.choice(fp.readlines())
+                kUlica = random.choice(fp.readlines())
+                kUlica = kUlica.strip()
             kNr = str(random.randrange(100))
             with open(r'data/miasto.txt', 'r', encoding='utf-8') as fp:
                 kMia = random.choice(fp.readlines())
+                kMia = kMia.strip()
             kTel = random.randint(500000000, 999999999)
             kMail = 'biuro@'+ str((kNaz)) + '.com.pl'
 
@@ -83,6 +89,7 @@ class generator:
         for i in range(num):
             maxOId += 1
             while True:
+                print(1)
                 with open(r'data/O_nazwa.txt', 'r', encoding='utf-8') as fp:
                     ONaz = random.choice(fp.readlines())
                     if ONaz not in ObNazwy or ObNazwa:
