@@ -45,7 +45,7 @@ class generator:
                 with open(r'data/K_nazwa.txt', 'r', encoding='utf-8') as fp:
                     kNaz = random.choice(fp.readlines())
                     kNaz = kNaz.strip()
-                    kNaz += ''.join(random.choices(string.ascii_letters,k=5))
+                    kNaz += ''.join(random.choices(string.ascii_letters,k=10))
                     if kNaz not in KlNazwa or nazwy:
                         nazwy.append(kNaz)
                         break
@@ -83,27 +83,31 @@ class generator:
         conn.execute('SELECT Nazwa FROM Obiekt')
         ObNazwa = conn.getData()
         del conn
-
         result = []
         ObNazwy = []
         for i in range(num):
             maxOId += 1
             while True:
-                print(1)
+
                 with open(r'data/O_nazwa.txt', 'r', encoding='utf-8') as fp:
                     ONaz = random.choice(fp.readlines())
+                    ONaz = ONaz.strip()
+                    ONaz += ''.join(random.choices(string.ascii_letters,k=10))
                     if ONaz not in ObNazwy or ObNazwa:
                         ObNazwy.append(ONaz)
                         break
             with open(r'data/ulica.txt', 'r', encoding='utf-8') as fp:
-               oUlica = random.choice(fp.readlines())
+                oUlica = random.choice(fp.readlines())
+                oUlica = oUlica.strip()
             oNr = str(random.randrange(100))
             with open(r'data/miasto.txt', 'r', encoding='utf-8') as fp:
                 oMia = random.choice(fp.readlines())
+                oMia = oMia.strip()
             oTel = random.randint(500000000, 999999999)
             oMail = 'biuro@'+ str((ONaz)) + '.com.pl'
             with open(r'data/osodp.txt', 'r', encoding='utf-8') as fp:
-               oOsOd = random.choice(fp.readlines())
+                oOsOd = random.choice(fp.readlines())
+                oOsOd = oOsOd.strip()
             klId = random.choice(KlId)
 
 
@@ -123,8 +127,10 @@ class generator:
         maxTypId = conn.getData()[0]
         del conn
 
+        #res = [eval(i) for i in BCheck]
         bramy = []
         result = []
+
         for i in range(num):
 
             #akumulator
@@ -151,13 +157,16 @@ class generator:
 
             #brama
             while True:
-                numer = random.randint(130000,229999)
-                if numer not in BCheck or bramy:
+                numer = random.randint(1,1300000)
+                if numer not in BCheck and numer not in bramy:
                     bramy.append(numer)
+                    print(BCheck)
+                    print(bramy)
                     break
+
             RysChoice = ['TAK','NIE']
             rysunek = random.choice(RysChoice)
-            if numer > 199999:
+            if numer > 599999:
                 czasookres = '6M'
             else:
                 czasookres = '12M'
